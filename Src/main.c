@@ -35,57 +35,90 @@
 
 // Defining the handle for the GPIO pin
 
-GPIO_Handle_t hgpio1;			// GPIO Handler for GPIO pin PD12
-GPIO_Handle_t hgpio2;			// GPIO Handler for GPIO pin PD13
-
-void delay()				// software delay function
-{
-	uint8_t i = 0;
-	for(i = 0; i < 100; i++);
-}
+GPIO_Handle_t hgpio_inp;
+GPIO_Handle_t hgpio_out12;
+GPIO_Handle_t hgpio_out13;
+GPIO_Handle_t hgpio_out14;
+GPIO_Handle_t hgpio_out15;
 
 
 int main(void)
 {
-	// Initializing the GPIO handler for pin PD12
-	hgpio1.pGPIOx = GPIOD;
-	hgpio1.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_12;
-	hgpio1.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUTPUT;
-	hgpio1.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_MEDIUM;
-	hgpio1.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_OUTPUT_PP;
-	hgpio1.GPIO_PinConfig.GPIO_PinOPType = GPIO_OUTPUT_PP;
-	hgpio1.GPIO_PinConfig.GPIO_PinAltFunMode = GPIO_PIN_ALTFUN_0;
+	// HANDLER SETTINGS FOR INPUT PIN ON PA0
+	hgpio_inp.pGPIOx = GPIOA;
+	hgpio_inp.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_0;
+	hgpio_inp.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_INPUT;
+	hgpio_inp.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NOPUPD;
+	hgpio_inp.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_MEDIUM;
+	hgpio_inp.GPIO_PinConfig.GPIO_PinOPType = GPIO_OUTPUT_PP;
+	hgpio_inp.GPIO_PinConfig.GPIO_PinAltFunMode = GPIO_PIN_ALTFUN_0;
 
-	// Initializing the GPIO handler for pin PD13
-	hgpio2.pGPIOx = GPIOD;
-	hgpio2.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_13;
-	hgpio2.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUTPUT;
-	hgpio2.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_MEDIUM;
-	hgpio2.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_OUTPUT_PP;
-	hgpio2.GPIO_PinConfig.GPIO_PinOPType = GPIO_OUTPUT_PP;
-	hgpio2.GPIO_PinConfig.GPIO_PinAltFunMode = GPIO_PIN_ALTFUN_0;
+	// HANDLER SETTINGS FOR INPUT PIN ON PD12
+	hgpio_out12.pGPIOx = GPIOD;
+	hgpio_out12.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_12;
+	hgpio_out12.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUTPUT;
+	hgpio_out12.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NOPUPD;
+	hgpio_out12.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_MEDIUM;
+	hgpio_out12.GPIO_PinConfig.GPIO_PinOPType = GPIO_OUTPUT_PP;
+	hgpio_out12.GPIO_PinConfig.GPIO_PinAltFunMode = GPIO_PIN_ALTFUN_0;
 
-	// Enabling the peripheral clock of GPIOD port
-	GPIO_PericlockControl(hgpio1.pGPIOx, ENABLE);
+	// HANDLER SETTINGS FOR INPUT PIN ON PD13
+	hgpio_out13.pGPIOx = GPIOD;
+	hgpio_out13.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_13;
+	hgpio_out13.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUTPUT;
+	hgpio_out13.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NOPUPD;
+	hgpio_out13.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_MEDIUM;
+	hgpio_out13.GPIO_PinConfig.GPIO_PinOPType = GPIO_OUTPUT_PP;
+	hgpio_out13.GPIO_PinConfig.GPIO_PinAltFunMode = GPIO_PIN_ALTFUN_0;
 
-	// Initializing GPIO pin PD12 with the parameters passed
-	GPIO_Init(&hgpio1);
+	// HANDLER SETTINGS FOR INPUT PIN ON PD14
+	hgpio_out14.pGPIOx = GPIOD;
+	hgpio_out14.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_14;
+	hgpio_out14.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUTPUT;
+	hgpio_out14.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NOPUPD;
+	hgpio_out14.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_MEDIUM;
+	hgpio_out14.GPIO_PinConfig.GPIO_PinOPType = GPIO_OUTPUT_PP;
+	hgpio_out14.GPIO_PinConfig.GPIO_PinAltFunMode = GPIO_PIN_ALTFUN_0;
 
-	// Initializing GPIO pin PD12 with the parameters passed
-	GPIO_Init(&hgpio2);
+	// HANDLER SETTINGS FOR INPUT PIN ON PD15
+	hgpio_out15.pGPIOx = GPIOD;
+	hgpio_out15.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_15;
+	hgpio_out15.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUTPUT;
+	hgpio_out15.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NOPUPD;
+	hgpio_out15.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_MEDIUM;
+	hgpio_out15.GPIO_PinConfig.GPIO_PinOPType = GPIO_OUTPUT_PP;
+	hgpio_out15.GPIO_PinConfig.GPIO_PinAltFunMode = GPIO_PIN_ALTFUN_0;
+
+	// PERIPHERAL CLOCKS ENABLING FOR BOTH PORTS
+	GPIO_PericlockControl(GPIOA, ENABLE);
+	GPIO_PericlockControl(GPIOD, ENABLE);
+
+	// INITIALISING THE HANDLERS FOR THE PINS
+	GPIO_Init(&hgpio_inp);
+	GPIO_Init(&hgpio_out12);
+	GPIO_Init(&hgpio_out13);
+	GPIO_Init(&hgpio_out14);
+	GPIO_Init(&hgpio_out15);
 
 	while(1)
 	{
-		// Toggling pin PD12
-		GPIO_WritePin(hgpio1.pGPIOx, hgpio1.GPIO_PinConfig.GPIO_PinNumber, GPIO_PIN_SET);
-		delay();
-		GPIO_WritePin(hgpio1.pGPIOx, hgpio1.GPIO_PinConfig.GPIO_PinNumber, GPIO_PIN_RESET);
-		delay();
+		if(GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET)
+		{
+			GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_SET);
+			GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);
+			GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
+			GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_SET);
+		}
 
-		// Toggling pin PD13
-		GPIO_WritePin(hgpio2.pGPIOx, hgpio2.GPIO_PinConfig.GPIO_PinNumber, GPIO_PIN_SET);
-		delay();
-		GPIO_WritePin(hgpio2.pGPIOx, hgpio2.GPIO_PinConfig.GPIO_PinNumber, GPIO_PIN_RESET);
-		delay();
+		else
+		{
+			GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET);
+			GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
+			GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
+			GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);
+		}
+
 	}
+
+
 }
